@@ -125,18 +125,14 @@ return network.registerProtocol('modemmanager', {
 		o.depends('allowedmode','5g|4g|3g|2g');
 
 		o = s.taboption('general', form.Value, 'username', _('PAP/CHAP username'));
-		o.depends({'allowedauth': 'pap', '!contains': true });
-		o.depends({'allowedauth': 'chap', '!contains': true });
-		o.depends({'allowedauth': 'mschap', '!contains': true });
-		o.depends({'allowedauth': 'mschapv2', '!contains': true });
-		o.depends({'allowedauth': 'eap', '!contains': true });
+		o.depends('auth', 'pap');
+		o.depends('auth', 'chap');
+		o.depends('auth', 'both');
 
 		o = s.taboption('general', form.Value, 'password', _('PAP/CHAP password'));
-		o.depends({'allowedauth': 'pap', '!contains': true });
-		o.depends({'allowedauth': 'chap', '!contains': true });
-		o.depends({'allowedauth': 'mschap', '!contains': true });
-		o.depends({'allowedauth': 'mschapv2', '!contains': true });
-		o.depends({'allowedauth': 'eap', '!contains': true });
+		o.depends('auth', 'pap');
+		o.depends('auth', 'chap');
+		o.depends('auth', 'both');
 		o.password = true;
 
 		o = s.taboption('general', form.ListValue, 'iptype', _('IP Type'));

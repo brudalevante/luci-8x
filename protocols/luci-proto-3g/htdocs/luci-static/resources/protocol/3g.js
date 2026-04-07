@@ -20,11 +20,11 @@ var callFileList = rpc.declare({
 
 network.registerPatternVirtual(/^3g-.+$/);
 
-function write_keepalive(section_id) {
-	const f_opt = this.map.lookupOption('_keepalive_failure', section_id);
-	const i_opt = this.map.lookupOption('_keepalive_interval', section_id);
-	let f = parseInt(f_opt?.[0]?.formvalue(section_id), 10);
-	let i = parseInt(i_opt?.[0]?.formvalue(section_id), 10);
+function write_keepalive(section_id, value) {
+	var f_opt = this.map.lookupOption('_keepalive_failure', section_id),
+	    i_opt = this.map.lookupOption('_keepalive_interval', section_id),
+	    f = parseInt(f_opt?.[0]?.formvalue(section_id), 10),
+	    i = parseInt(i_opt?.[0]?.formvalue(section_id), 10);
 
 	if (isNaN(i))
 		i = 1;
@@ -68,18 +68,18 @@ return network.registerProtocol('3g', {
 	},
 
 	renderFormOptions: function(s) {
-		let o;
+		var o;
 
 		o = s.taboption('general', form.Value, '_modem_device', _('Modem device'));
 		o.ucioption = 'device';
 		o.rmempty = false;
 		o.load = function(section_id) {
 			return callFileList('/dev/').then(L.bind(function(devices) {
-				for (let i = 0; i < devices.length; i++)
+				for (var i = 0; i < devices.length; i++)
 					this.value(devices[i]);
 				return callFileList('/dev/tts/');
 			}, this)).then(L.bind(function(devices) {
-				for (let i = 0; i < devices.length; i++)
+				for (var i = 0; i < devices.length; i++)
 					this.value(devices[i]);
 				return form.Value.prototype.load.apply(this, [section_id]);
 			}, this));
@@ -133,9 +133,9 @@ return network.registerProtocol('3g', {
 		o.write       = write_keepalive;
 		o.remove      = write_keepalive;
 		o.cfgvalue = function(section_id) {
-			let v = uci.get('network', section_id, 'keepalive');
+			var v = uci.get('network', section_id, 'keepalive');
 			if (typeof(v) == 'string' && v != '') {
-				const m = v.match(/^(\d+)[ ,]\d+$/);
+				var m = v.match(/^(\d+)[ ,]\d+$/);
 				return m ? m[1] : v;
 			}
 		};
@@ -146,9 +146,9 @@ return network.registerProtocol('3g', {
 		o.write       = write_keepalive;
 		o.remove      = write_keepalive;
 		o.cfgvalue = function(section_id) {
-			let v = uci.get('network', section_id, 'keepalive');
+			var v = uci.get('network', section_id, 'keepalive');
 			if (typeof(v) == 'string' && v != '') {
-				const m = v.match(/^\d+[ ,](\d+)$/);
+				var m = v.match(/^\d+[ ,](\d+)$/);
 				return m ? m[1] : v;
 			}
 		};
